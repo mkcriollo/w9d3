@@ -4,11 +4,22 @@ class View {
     this.$el = $el;
 
     this.setupBoard();
+    this.bindEvents();
   }
 
-  bindEvents() {}
+  bindEvents() {
+    this.$el.on("click", "li", event => {
+       let $square = $(event.currentTarget)
+       this.makeMove($square)
+    });
+  };
 
-  makeMove($square) {}
+  makeMove($square) {
+ let pos = $square.data("pos")
+  this.game.playMove(pos);
+  $square.addClass(this.game.currentPlayer);
+  
+};
 
   setupBoard() {
     let $ul = $("<ul>");
@@ -16,8 +27,9 @@ class View {
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 3; col++) {
         let $li = $("<li>")
-        let pos = [row,col]
-        $li.after(pos)
+      
+        $li.data("pos",[row,col])
+      
 
         $ul.append($li)
       }
